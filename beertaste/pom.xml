@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.beertaste</groupId>
-	<artifactId>Dev</artifactId>
+	<artifactId>dev</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Dev</name>
