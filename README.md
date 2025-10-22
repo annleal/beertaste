@@ -15,6 +15,7 @@ mvn clean package   # Compila y empaqueta el código
 ```
 
 ### Dependencias Spring
+
 **Spring Web**
 **Spring Data JPA**
 **MySQL Driver**
@@ -25,3 +26,11 @@ mvn clean package   # Compila y empaqueta el código
 **Spring Boot Actuator**
 **Lombok**
 
+
+## Antes de instalar las dependencias, verificar si estas con la version 17 de java
+
+```bash
+mvn -v
+$env:JAVA_HOME="C:\Program Files\Java\jdk-17"
+$env:PATH="$env:JAVA_HOME\bin;$env:PATH"
+```
