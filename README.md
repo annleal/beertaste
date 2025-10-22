@@ -23,8 +23,7 @@ mvn clean package   # Compila y empaqueta el código
 **Spring Security**
 **Thymeleaf**
 **Validation**
-**Spring Boot Actuator**
-**Lombok**
+
 
 
 ## Antes de instalar las dependencias, verificar si estas con la version 17 de java

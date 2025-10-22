@@ -1,4 +1,5 @@
-package com.beertaste.dev.entity;
+package com.beertaste.demo.entity;
+
 
 import jakarta.persistence.*;
 

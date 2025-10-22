@@ -1,9 +1,9 @@
-package com.beertaste.dev.repository;
+package com.beertaste.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.beertaste.dev.entity.Beer;
-import com.beertaste.dev.entity.Style;
-import com.beertaste.dev.entity.Country;
+import com.beertaste.demo.entity.Beer;
+import com.beertaste.demo.entity.Style;
+import com.beertaste.demo.entity.Country;
 import java.util.List;
 
 public interface BeerRepository extends JpaRepository<Beer, Long> {
