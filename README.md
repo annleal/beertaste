@@ -12,5 +12,16 @@ Proyecto final del ciclo DAW en Cesur.
 ```bash
 mvn clean install   # Instala las dependencias del proyecto
 mvn clean package   # Compila y empaqueta el código
+```
 
+### Dependencias Spring
+**Spring Web**
+**Spring Data JPA**
+**MySQL Driver**
+**Spring Boot DevTools**
+**Spring Security**
+**Thymeleaf**
+**Validation**
+**Spring Boot Actuator**
+**Lombok**
 
