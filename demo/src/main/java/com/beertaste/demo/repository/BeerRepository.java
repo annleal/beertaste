@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface BeerRepository extends JpaRepository<Beer, Long> {
     List<Beer> findByStyle(Style style);
-    List<Beer> findByCountryOfOrigin(Country country);
+    List<Beer> findByCountry(Country country);
     List<Beer> findByBusinessNameContainingIgnoreCase(String name);
 }

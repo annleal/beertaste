@@ -1,6 +1,5 @@
 package com.beertaste.demo.entity;
 
-
 import jakarta.persistence.*;
 
 @Entity
@@ -20,6 +19,10 @@ public class Beer {
     @JoinColumn(name = "style_id")
     private Style style;
 
+    @ManyToOne
+    @JoinColumn(name = "country_id") // nueva columna para país
+    private Country country;
+
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] photo; // Imagen en binario
@@ -37,6 +40,9 @@ public class Beer {
 
     public Style getStyle() { return style; }
     public void setStyle(Style style) { this.style = style; }
+
+    public Country getCountry() { return country; }
+    public void setCountry(Country country) { this.country = country; }
 
     public byte[] getPhoto() { return photo; }
     public void setPhoto(byte[] photo) { this.photo = photo; }
