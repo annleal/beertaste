@@ -1,0 +1,98 @@
+/* === FONDO GENERAL === */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: url('../img/fondo.png') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Inter', sans-serif;
+}
+
+
+/* === HEADER === */
+.beer-header {
+  padding: 20px 0;
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.logo-image {
+  height: 80px;
+  width: auto;
+}
+
+/* === CONTENEDOR LOGIN === */
+.page-wrapper {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  background-color: rgba(255, 255, 255, 0.92);
+  padding: 32px 26px;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+  backdrop-filter: blur(4px);
+  margin: 20px;
+}
+
+/* === SUBTÍTULO === */
+.subtitle {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 1.6rem;
+}
+
+/* === INPUTS === */
+.form-control {
+  border-radius: 10px;
+  text-align: center;
+  padding: 10px 12px;
+  max-width: 320px;
+  margin: 0 auto;
+  display: block;
+}
+.form-control:focus {
+  border-color: #f9b233;
+  box-shadow: 0 0 0 0.2rem rgba(249,178,51,0.25);
+}
+
+/* === BOTÓN === */
+.btn-primary {
+  background-color: #f9b233;
+  border: none;
+  color: #111;
+  padding: 10px 12px;
+  font-weight: 700;
+  border-radius: 10px;
+}
+.btn-primary:hover {
+  background-color: #e09d29;
+}
+
+/* === MENSAJE DE ERROR === */
+.error-message {
+  color: #842029;
+  background-color: #f8d7da;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* === LINKS === */
+.footer-text a {
+  color: #f9b233;
+  font-weight: 600;
+  text-decoration: none;
+}
+.footer-text a:hover {
+  color: #e09d29;
+  text-decoration: underline;
+}
