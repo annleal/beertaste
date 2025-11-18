@@ -5,12 +5,15 @@ package com.beertaste.demo.entity;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "styles")
 public class Style {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore 
     private Long styleId;
 
     private String styleName;

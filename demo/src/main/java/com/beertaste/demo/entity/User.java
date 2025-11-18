@@ -3,6 +3,8 @@ package com.beertaste.demo.entity;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -26,6 +28,7 @@ public class User {
     private String role = "USER"; // Puede ser USER o ADMIN
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore 
     private List<Evaluation> evaluations;
 
     // Getters y Setters

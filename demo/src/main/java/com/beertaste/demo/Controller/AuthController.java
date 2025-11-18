@@ -69,4 +69,10 @@ public class AuthController {
         }
         return "forgot-password";
     }
+
+    @GetMapping("/politica-cookies")
+    public String showCookiesPolicy() {
+        return "politica-cookies";
+    }
+
 }

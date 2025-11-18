@@ -4,6 +4,8 @@ package com.beertaste.demo.entity;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "countries")
 public class Country {
@@ -15,6 +17,7 @@ public class Country {
     private String countryName;
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
+    @JsonIgnore 
     private List<User> users;
 
     // Getters y Setters

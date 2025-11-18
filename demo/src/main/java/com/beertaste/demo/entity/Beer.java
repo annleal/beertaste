@@ -1,4 +1,7 @@
 package com.beertaste.demo.entity;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -27,6 +30,14 @@ public class Beer {
     @Column(columnDefinition = "LONGBLOB")
     private byte[] photo; // Imagen en binario
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user; // propietario
+
+    @OneToMany(mappedBy = "beer", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Evaluation> evaluations; // evaluaciones asociadas
+
     // Getters y Setters
 
     public Long getIdCerveza() { return idCerveza; }
@@ -46,4 +57,11 @@ public class Beer {
 
     public byte[] getPhoto() { return photo; }
     public void setPhoto(byte[] photo) { this.photo = photo; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public List<Evaluation> getEvaluations() { return evaluations; }
+    public void setEvaluations(List<Evaluation> evaluations) { this.evaluations = evaluations; }
+
 }

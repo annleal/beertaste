@@ -96,3 +96,22 @@ body {
   color: #e09d29;
   text-decoration: underline;
 }
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  text-align: center;
+  padding: 15px;
+  z-index: 9999;
+}
+
+.cookie-buttons {
+  margin-top: 10px;
+}
+
+.cookie-banner a {
+  color: #ffc107;
+  text-decoration: underline;
+}

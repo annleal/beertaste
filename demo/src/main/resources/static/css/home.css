@@ -1,0 +1,50 @@
+.feature-icon {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.feature-card .card {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(249, 178, 51, 0.4);
+}
+.logo-image {
+  height: 80px;
+  width: auto;
+}
+
+.ranking-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.ranking-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px dashed #444;
+}
+
+.ranking-list li:last-child {
+  border-bottom: none;
+}
+
+.ranking-list .rank {
+  width: 2em;
+  text-align: left;
+  margin-right: 0.5em;
+}
+
+.ranking-list .valor {
+  font-weight: bold;
+  color: #ffc107;
+}
