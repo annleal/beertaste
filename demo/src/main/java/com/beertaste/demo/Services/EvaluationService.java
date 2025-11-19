@@ -57,14 +57,26 @@ public class EvaluationService {
             .collect(Collectors.toList());
 }
 
-    public Page<Evaluation> getPaginatedEvaluations(String search, String country, Boolean mine, User loggedUser, Pageable pageable) {
+public Page<Evaluation> getPaginatedEvaluations(String search, String country, Boolean mine, User loggedUser, Pageable pageable) {
+
+    String searchTerm = (search == null) ? "" : search;
+
     if (mine != null && mine) {
-        return evaluationRepository.findByBeer_BusinessNameContainingIgnoreCaseAndUser(search, loggedUser, pageable);
-    } else if (country != null && !country.isEmpty()) {
-        return evaluationRepository.findByBeer_BusinessNameContainingIgnoreCaseAndUser_Country_CountryNameContainingIgnoreCase(search, country, pageable);
-    } else {
-        return evaluationRepository.findByBeer_BusinessNameContainingIgnoreCase(search, pageable);
+        return evaluationRepository.findByBeer_BusinessNameContainingIgnoreCaseAndUser(searchTerm, loggedUser, pageable);
     }
+
+    if (country != null && !country.isEmpty()) {
+        return evaluationRepository.findByBeer_BusinessNameContainingIgnoreCaseAndUser_Country_CountryNameContainingIgnoreCase(
+                searchTerm, country, pageable
+        );
     }
+
+    return evaluationRepository.findByBeer_BusinessNameContainingIgnoreCase(searchTerm, pageable);
+}
+public List<Evaluation> findByUser(User user) {
+    return evaluationRepository.findByUser(user);
+}
+
+
 
 }

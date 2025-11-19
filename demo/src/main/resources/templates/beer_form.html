@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Beer Form</title>
+    <script src="/js/photo.js"></script>
+</head>
+<body>
+
+<h2 th:text="${beer.id != null} ? 'Editar Cerveza' : 'Nueva Cerveza'"></h2>
+
+<form th:action="@{/beer/api}" method="post" enctype="multipart/form-data" id="beerForm">
+
+    <!-- Campos de la cerveza -->
+    <input type="hidden" th:field="*{id}">
+    
+    <label>Nombre:</label>
+    <input type="text" th:field="*{name}" required><br><br>
+
+    <label>Descripción:</label>
+    <textarea th:field="*{description}" rows="3"></textarea><br><br>
+
+    <!-- Subida de foto -->
+    <label>Foto:</label>
+    <input type="file" id="photoInput" name="photo" accept="image/*"><br>
+    <img id="previewImg" style="max-width:200px; margin-top:10px; display:none;" 
+         th:if="${beer.photo != null}" 
+         th:src="'data:image/jpeg;base64,' + ${#strings.encodeBase64(beer.photo)}"><br><br>
+
+    <button type="submit">Guardar</button>
+
+</form>
+
+</body>
+</html>

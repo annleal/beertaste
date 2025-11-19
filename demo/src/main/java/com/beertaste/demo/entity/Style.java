@@ -13,14 +13,14 @@ public class Style {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore 
     private Long styleId;
 
     private String styleName;
     private String styleColor;
 
     @OneToMany(mappedBy = "style", cascade = CascadeType.ALL)
-    private List<Beer> beers;
+    @JsonIgnore 
+        private List<Beer> beers;
 
     // Getters y Setters
     public Long getStyleId() {

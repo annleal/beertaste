@@ -23,6 +23,8 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
     Page<Evaluation> findByBeer_BusinessNameContainingIgnoreCaseAndUser(
         String beerName, User user, Pageable pageable
     );
+     
+    List<Evaluation> findByUser(User user);
 
 
     // Top 5 cervezas mejor valoradas
