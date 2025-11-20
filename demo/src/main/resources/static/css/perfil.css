@@ -1,0 +1,11 @@
+body {
+    background-color: #1b1b1b;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+input[readonly] {
+    cursor: not-allowed;
+}
