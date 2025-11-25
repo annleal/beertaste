@@ -1,10 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-    cargarPaises()
-        .then(() => cargarDatosUsuario());
+
+    const userId = document.getElementById("userId").value;
+
+    cargarPaises();
+    cargarDatosUsuario(userId);
 
     document.getElementById("perfilForm").addEventListener("submit", (e) => {
         e.preventDefault();
-        actualizarPerfil();
+        actualizarPerfil(userId);
     });
 });
 
@@ -12,11 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
 // CARGAR PAÍSES
 // ========================
 function cargarPaises() {
-    return fetch("/api/countries")
+    fetch("/api/countries")
         .then(res => res.json())
         .then(data => {
             const select = document.getElementById("country");
             select.innerHTML = "";
+
             data.forEach(country => {
                 let option = document.createElement("option");
                 option.value = country.idCountry;
@@ -27,47 +31,29 @@ function cargarPaises() {
 }
 
 // ========================
-// CARGAR DATOS DEL USUARIO LOGUEADO
+// CARGAR DATOS DEL USUARIO - 
 // ========================
-function cargarDatosUsuario() {
-    fetch("/api/users/current")
-        .then(res => {
-            if (!res.ok) throw new Error("No hay usuario logueado");
-            return res.json();
-        })
-        .then(user => {
-            document.getElementById("name").value = user.name;
-            document.getElementById("surname").value = user.surname;
-            document.getElementById("email").value = user.email;
-            document.getElementById("country").value = user.country.idCountry;
-
-            // Guardamos id del usuario en el formulario
-            document.getElementById("perfilForm").dataset.userId = user.id;
-        })
-        .catch(err => {
-            alert(err.message);
-            window.location.href = "/login";
+function cargarDatosUsuario(id) {
+    fetch(`/api/users/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("country").value = data.country.idCountry;
         });
 }
 
 // ========================
 // ACTUALIZAR PERFIL
 // ========================
-function actualizarPerfil() {
-    const form = document.getElementById("perfilForm");
-    const id = form.dataset.userId;
-    const name = document.getElementById("name").value;
-    const surname = document.getElementById("surname").value;
-    const password = document.getElementById("password").value;
-    const country = document.getElementById("country").value;
+function actualizarPerfil(id) {
 
-    let payload = {
-        name,
-        surname,
-        country: { idCountry: country }
+    const payload = {
+        name: document.getElementById("name").value,
+        surname: document.getElementById("surname").value,
+        country: { idCountry: document.getElementById("country").value }
     };
 
-    if (password.trim() !== "") {
+    const password = document.getElementById("password").value.trim();
+    if (password !== "") {
         payload.password = btoa(password);
     }
 
@@ -77,11 +63,11 @@ function actualizarPerfil() {
         body: JSON.stringify(payload)
     })
         .then(res => {
-            if (!res.ok) throw new Error("Error al actualizar el perfil");
+            if (!res.ok) throw new Error("Error actualizando perfil");
             return res.json();
         })
         .then(() => {
-            alert("Perfil actualizado correctamente");
+            alert("Perfil actualizado");
             document.getElementById("password").value = "";
         })
         .catch(err => alert("Error: " + err.message));
