@@ -96,4 +96,14 @@ public class BeerService {
             return beerRepository.findByBusinessNameContainingIgnoreCase(search, pageable);
         }
     }
+
+    // ---------------- Búsqueda de cervezas para BeerTap ----------------
+    public List<Beer> searchBeers(String search) {
+    if (search == null || search.isEmpty()) {
+        return beerRepository.findAll();
+    } else {
+        return beerRepository.findByBusinessNameContainingIgnoreCase(search);
+    }
+}
+
 }

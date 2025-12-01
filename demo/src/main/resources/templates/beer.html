@@ -9,7 +9,10 @@
 </head>
 
 <body class="p-4 bg-dark text-light">
-
+<header class="beer-header d-flex justify-content-between align-items-center px-4 py-2">
+    <img th:src="@{/img/titulo.png}" alt="BeerTaste" class="logo-image"/>
+    <a class="btn btn-outline-warning" th:href="@{/home}">Volver</a>
+</header>
 <h1 class="mb-4">🍺 Catálogo de Cervezas</h1>
 
 <table class="table table-dark table-hover">

@@ -1,0 +1,18 @@
+
+
+body {
+    background-color: #111;
+    color: white;
+}
+
+.logo-image {
+    height: 80px;
+}
+
+.table th, .table td {
+    border-bottom: 1px dashed #444;
+}
+
+.table th {
+    color: #ffc107;
+}

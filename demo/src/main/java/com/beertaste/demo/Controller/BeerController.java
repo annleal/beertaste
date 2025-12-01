@@ -3,6 +3,7 @@ package com.beertaste.demo.Controller;
 import com.beertaste.demo.entity.Beer;
 import com.beertaste.demo.entity.User;
 import com.beertaste.demo.Services.BeerService;
+import com.beertaste.demo.dto.BeerTapDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,11 +22,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.util.List;
 
 import org.imgscalr.Scalr;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("/beer")
@@ -69,47 +71,34 @@ public class BeerController {
     public ResponseEntity<byte[]> getBeerPhoto(@PathVariable Long id) {
         Beer beer = beerService.getBeerById(id).orElse(null);
 
-          if (beer == null) {
-        System.out.println("Cerveza no encontrada: id=" + id);
-        return ResponseEntity.notFound().build();
-    }
-
         if (beer == null || beer.getPhoto() == null) {
-            System.out.println("La cerveza no tiene foto: id=" + id);
             return ResponseEntity.notFound().build();
         }
-        System.out.println("Foto encontrada: tamaño=" + beer.getPhoto().length + " bytes");
-        
 
+        try {
+            byte[] photoBytes = beer.getPhoto();
+            InputStream is = new ByteArrayInputStream(photoBytes);
+            BufferedImage original = ImageIO.read(is);
 
-       try {
-    byte[] photoBytes = beer.getPhoto();
-    InputStream is = new ByteArrayInputStream(photoBytes);
-    BufferedImage original = ImageIO.read(is);
+            if (original != null) {
+                BufferedImage resized = Scalr.resize(original, 400); 
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(resized, "png", baos);
 
-    if (original != null) {
-        // Si ImageIO puede leer la imagen, la redimensionamos
-        BufferedImage resized = Scalr.resize(original, 400); // ancho máximo 400px
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.IMAGE_PNG);
+                return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(resized, "png", baos);
+            } else {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                return new ResponseEntity<>(photoBytes, headers, HttpStatus.OK);
+            }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-        return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
-
-    } else {
-        // Si no puede leer, enviamos los bytes tal cual
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        return new ResponseEntity<>(photoBytes, headers, HttpStatus.OK);
-    }
-
-} catch (Exception e) {
-    e.printStackTrace(); // para ver la causa en consola
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-}
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // ---------------- Crear cerveza ----------------
@@ -162,4 +151,63 @@ public class BeerController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    // ---------------- API búsqueda para BeerTap ----------------
+    @GetMapping("/api/search")
+    @ResponseBody
+    public List<BeerTapDTO> searchBeersForTap(@RequestParam String q) {
+        List<Beer> beers = beerService.searchBeers(q);
+        return beers.stream().map(beer -> {
+            double avgRating = 0;
+            if (beer.getEvaluations() != null && !beer.getEvaluations().isEmpty()) {
+                avgRating = beer.getEvaluations().stream()
+                                .mapToInt(e -> e.getRateEvaluation())
+                                .average()
+                                .orElse(0);
+            }
+            return new BeerTapDTO(
+                    beer.getIdCerveza(),
+                    beer.getBusinessName(),
+                    beer.getAbv(),
+                    beer.getStyle() != null ? beer.getStyle().getStyleName() : "",
+                    beer.getStyle() != null ? beer.getStyle().getStyleColor() : "",
+                    beer.getCountry() != null ? beer.getCountry().getCountryName() : "",
+                    (int) Math.round(avgRating),
+                    0.0, // pricePint inicial
+                    0.0, // priceHalfPint inicial
+                    ""   // tapNumber inicial
+            );
+        }).toList();
+    }
+
+    // ---------------- Guardar JSON local BeerTap ----------------
+    @PostMapping("/tap/save")
+    @ResponseBody
+    public ResponseEntity<String> saveTap(@RequestBody List<BeerTapDTO> tapList) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            File file = new File("src/main/resources/static/tapdata.json");
+            mapper.writeValue(file, tapList);
+            return ResponseEntity.ok("OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error guardando tap");
+        }
+    }
+
+    @GetMapping("/tap/load")
+    @ResponseBody
+    public ResponseEntity<List<BeerTapDTO>> loadTap() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            File file = new File("src/main/resources/static/tapdata.json");
+            if (!file.exists()) return ResponseEntity.ok(List.of());
+            List<BeerTapDTO> tapList = List.of(mapper.readValue(file, BeerTapDTO[].class));
+            return ResponseEntity.ok(tapList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of());
+        }
+    }
+
 }
