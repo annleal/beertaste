@@ -6,22 +6,21 @@
     <title>BeerTaste | BeerTap Admin</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
     <link th:href="@{/css/beertap.css}" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
-<body>
-<header class="beer-header d-flex justify-content-between align-items-center px-4 py-2">
-    <img th:src="@{/img/titulo.png}" alt="BeerTaste" class="logo-image"/>
-    <div>
-        <a class="btn btn-outline-warning me-2" th:href="@{/home}">Volver</a>
+<body class="p-4">
+<!-- Navbar incluido -->
+<header th:replace="fragments/navbar :: navbar"></header>
+
+<div>
         <a id="openClientView" class="btn btn-warning">Modo Cliente</a>
     </div>
-</header>
-
 <main class="container text-center mt-4">
 
-    <h1 class="text-warning mb-4">🍺 Gestión de Grifos</h1>
+    <h1 class="text-warning mb-4">Gestión de Grifos</h1>
 
     <!-- FORMULARIO: búsqueda + auto-rellenado -->
     <div class="card shadow-sm mb-4 p-4 admin-card position-relative">

@@ -12,10 +12,7 @@
 
 <body>
 <header class="beer-header d-flex justify-content-between align-items-center px-4 py-2">
-    <img th:src="@{/img/titulo.png}" alt="BeerTaste" class="logo-image"/>
-    <div>
-        <a class="btn btn-outline-warning me-2" th:href="@{/beertap}">Modo Admin</a>
-    </div>
+    <img th:src="@{/img/titulo.png}" alt="BeerTaste" class="logo-image" ondblclick="window.location.href='/beertap'">
 </header>
 
 <main class="container text-center mt-4">

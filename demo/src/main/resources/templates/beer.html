@@ -5,50 +5,63 @@
     <title>BeerTaste | Catálogo de Cervezas</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
     <link rel="stylesheet" th:href="@{/css/beer.css}">
 </head>
 
-<body class="p-4 bg-dark text-light">
-<header class="beer-header d-flex justify-content-between align-items-center px-4 py-2">
-    <img th:src="@{/img/titulo.png}" alt="BeerTaste" class="logo-image"/>
-    <a class="btn btn-outline-warning" th:href="@{/home}">Volver</a>
-</header>
-<h1 class="mb-4">🍺 Catálogo de Cervezas</h1>
+<body class="p-4">
+<!-- Navbar incluido -->
+<header th:replace="fragments/navbar :: navbar"></header>
 
-<table class="table table-dark table-hover">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>País</th>
-            <th>ABV</th>
-            <th>Estilo</th>
-            <th>Foto</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="beer : ${beersPage.content}">
-            <td th:text="${#strings.abbreviate(beer.businessName, 30)}"></td>
-            <td th:text="${beer.country.countryName}"></td>
-            <td th:text="${beer.abv}"></td>
-            <td th:text="${beer.style.styleName}"></td>
-            <td>
-                <button class="btn btn-info btn-sm"
-                        th:if="${beer.photo != null}"
-                        th:onclick="'showPhoto(' + ${beer.idCerveza} + ')'">
-                    Ver Foto
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
 
-<!-- PAGINACIÓN -->
-<div class="d-flex justify-content-between mt-3">
-    <button class="btn btn-secondary" th:if="${beersPage.hasPrevious()}" 
-            th:onclick="'location.href=\'/beer?page=' + (${beersPage.number}-1) + '\'+'">Anterior</button>
-    <span> Página <span th:text="${beersPage.number+1}"></span> de <span th:text="${beersPage.totalPages}"></span> </span>
-    <button class="btn btn-secondary" th:if="${beersPage.hasNext()}" 
-            th:onclick="'location.href=\'/beer?page=' + (${beersPage.number}+1) + '\'+'">Siguiente</button>
+<div class="container mt-4">
+
+    <h1 class="mb-4 text-center">🍺 Catálogo de Cervezas</h1>
+    <!--div class="table-responsive"-->
+    <!--table class="table table-bordered table-striped"-->
+    <div class="table-wrapper">
+    <table class="table table-standard">
+        <thead>
+            <tr class="align-middle">
+                <th>Nombre</th>
+                <th>País</th>
+                <th>ABV</th>
+                <th>Estilo</th>
+                <th>Foto</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="beer : ${beersPage.content}">
+                <td th:text="${#strings.abbreviate(beer.businessName, 30)}"></td>
+                <td th:text="${beer.country.countryName}"></td>
+                <td th:text="${beer.abv}"></td>
+                <td th:text="${beer.style.styleName}"></td>
+                <td>
+                    <button class="btn btn-info btn-sm"
+                            th:if="${beer.photo != null}"
+                            th:onclick="'showPhoto(' + ${beer.idCerveza} + ')'">
+                        Ver Foto
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <!-- PAGINACIÓN -->
+    <div class="d-flex justify-content-between mt-3">
+        <button class="btn btn-secondary" th:if="${beersPage.hasPrevious()}"
+                th:onclick="'location.href=\'/beer?page=' + (${beersPage.number}-1) + '\''">Anterior</button>
+
+        <span>
+            Página <span th:text="${beersPage.number+1}"></span>
+            de <span th:text="${beersPage.totalPages}"></span>
+        </span>
+
+        <button class="btn btn-secondary" th:if="${beersPage.hasNext()}"
+                th:onclick="'location.href=\'/beer?page=' + (${beersPage.number}+1) + '\''">Siguiente</button>
+    </div>
+
 </div>
 
 <!-- MODAL -->

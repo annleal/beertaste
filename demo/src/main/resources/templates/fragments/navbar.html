@@ -1,0 +1,42 @@
+<nav th:fragment="navbar"
+     class="navbar navbar-expand-lg px-4 py-2"
+     style="
+        background: linear-gradient(135deg, #2A1A0F 0%, #3A1F0B 40%, #4A2A12 100%);
+        border-bottom: 2px solid #E0A942;">
+        
+    <a class="navbar-brand d-flex align-items-center" th:href="@{/home}">
+        <img src="/img/titulo.png" alt="BeerTaste" class="logo-image me-2">
+        
+    </a>
+    
+    <!-- Botón hamburguesa para móviles -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links del menú -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/home}">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/evaluaciones}">Evaluaciones</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/beer}">Cervezas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/perfil}">Perfil</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/beertap}">BeerTap</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}">Salir</a>
+            </li>
+        </ul>
+    </div>
+</nav>

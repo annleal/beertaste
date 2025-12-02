@@ -1,13 +1,4 @@
-/* === FONDO GENERAL === */
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  background: url('../img/fondo.png') no-repeat center center fixed;
-  background-size: cover;
-  font-family: 'Inter', sans-serif;
-}
-
+/* ICONOS PRINCIPALES */
 .feature-icon {
   width: 70px;
   height: 70px;
@@ -15,19 +6,58 @@ body {
 }
 
 .feature-card .card {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(30, 30, 30, 0.85);
   border: none;
   border-radius: 15px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
 }
 
 .feature-card .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(249, 178, 51, 0.4);
+  box-shadow: 0 8px 20px rgba(106,58,30,0.5); /* sombra estilo madera */
 }
+
 .logo-image {
   height: 80px;
   width: auto;
+}
+
+/* BOTÓN LOGOUT */
+.btn-logoff {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #c26a22;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.btn-logoff:hover {
+  background-color: #a3541b;
+  color: #fff;
+}
+
+/* RANKINGS */
+.rankings {
+  margin-top: 40px;
+}
+
+.ranking-card {
+  background-color: rgba(30,30,30,0.85);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+.ranking-card h5 {
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #f2b632; /* color madera dorada */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 .ranking-list {
@@ -40,8 +70,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 0;
-  border-bottom: 1px dashed #444;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.1);
+  font-size: 0.95rem;
 }
 
 .ranking-list li:last-child {
@@ -50,11 +81,10 @@ body {
 
 .ranking-list .rank {
   width: 2em;
-  text-align: left;
-  margin-right: 0.5em;
+  font-weight: bold;
 }
 
-.ranking-list .valor {
-  font-weight: bold;
-  color: #ffc107;
+.ranking-list .valor i {
+  color: #f2b632;
+  margin-left: 2px;
 }

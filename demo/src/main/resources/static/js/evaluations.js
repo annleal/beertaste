@@ -17,3 +17,21 @@ function openEvaluationModal() {
     const modal = new bootstrap.Modal(document.getElementById('evaluationModal'));
     modal.show();
 }
+// Modal Editar
+function openEditEvaluationModal(id) {
+    const modalBody = document.getElementById('modalBody');
+    modalBody.innerHTML = '<div class="text-center">Cargando...</div>';
+
+    fetch('/evaluaciones/editar/' + id)
+        .then(response => response.text())
+        .then(html => {
+            modalBody.innerHTML = html;
+        })
+        .catch(err => {
+            modalBody.innerHTML = '<div class="text-danger text-center">Error al cargar la evaluación.</div>';
+            console.error(err);
+        });
+
+    const modal = new bootstrap.Modal(document.getElementById('evaluationModal'));
+    modal.show();
+}

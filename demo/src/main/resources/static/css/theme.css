@@ -1,0 +1,190 @@
+/* -------------------------
+   BEERTASTE GLOBAL THEME
+   ------------------------- */
+
+/* Fondo general para todas las pantallas internas */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+
+    /* Gradiente tipo madera y espuma de cerveza */
+    background: linear-gradient(160deg,
+            #fff8e6 0%,
+            /* Espuma arriba */
+            #F8D878 15%,
+            /* Rubia clara */
+            #E0A942 40%,
+            /* Golden Ale */
+            #C26A22 65%,
+            /* Amber Ale / madera clara */
+            #6A3A1E 90%,
+            /* Brown Ale / madera más oscura */
+            #2A1A0F 100%
+            /* Stout / madera profunda */
+        );
+
+    font-family: 'Inter', sans-serif;
+    color: #fff8e6;
+    /* Tono crema para texto */
+    background-attachment: fixed;
+    /* Mantener fondo fijo */
+}
+
+/* Login -> fondo especial */
+/*body.login-page {
+    background: url('../img/fondo.png') no-repeat center center fixed !important;
+    background-size: cover !important;
+}*/
+
+/* -------------------------
+   CARDS / CONTENEDORES
+   ------------------------- */
+.card-blur,
+.card-dark {
+    background: rgba(30, 30, 30, 0.85);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Versión sin blur */
+.card-dark {
+    backdrop-filter: none;
+}
+
+/* -------------------------
+   TIPOGRAFÍA
+   ------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: #fff8e6;
+    /* tono crema */
+    font-weight: 700;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* -------------------------
+   BOTONES
+   ------------------------- */
+.btn-gold {
+    background-color: #f2b632;
+    border: none;
+    color: #111;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.btn-gold:hover {
+    background-color: #d49c2c;
+}
+
+.btn-dark-outline {
+    border: 1px solid #6A3A1E;
+    /* tono madera oscuro */
+    color: #fff8e6;
+    /* crema para contraste */
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.btn-dark-outline:hover {
+    background-color: rgba(106, 58, 30, 0.8);
+    /* resalta sin chocar con fondo */
+    color: #fff;
+}
+
+
+/* -------------------------
+   TABLAS
+   ------------------------- */
+.table-dark {
+    background-color: rgba(26, 26, 26, 0.85) !important;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table-dark thead {
+    background-color: #222 !important;
+    color: #f2b632;
+}
+
+.table-dark tbody tr:hover {
+    background-color: #262626 !important;
+}
+
+/* -------------------------
+   MODAL GLOBAL
+   ------------------------- */
+.modal-content {
+    background: rgba(26, 26, 26, 0.95) !important;
+    color: #fff;
+    border-radius: 12px;
+}
+
+
+/*----------------------------
+   Formatacion de la tablas
+   ---------------------------*/
+
+.table-wrapper {
+    display: flex;
+    justify-content: center;
+    /* centra la tabla horizontalmente */
+    margin: 20px 0;
+}
+
+.table-standard {
+    border-radius: 16px;
+    overflow: hidden;
+    /* permite que los bordes redondeados funcionen con el fondo */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    /* sombra para profundidad */
+    background-color: rgba(30, 30, 30, 0.85);
+    /* fondo semi-oscuro para contraste con gradiente */
+}
+
+.table-standard th,
+.table-standard td {
+    padding: 12px 16px;
+    /* más espacioso para UX */
+    text-align: center;
+    /* centra contenido de celdas */
+    vertical-align: middle;
+}
+
+.table-standard thead {
+    background-color: rgba(50, 30, 10, 0.9);
+    /* tono madera más oscuro para encabezado */
+    color: #fff8e6;
+    /* texto crema */
+}
+
+.table-standard tbody tr:hover {
+    background-color: rgba(106, 58, 30, 0.8);
+    /* hover ámbar/madera */
+}
+
+/*------------------------
+    NAVBAR
+  ----------------------*/
+  /* Logo en navbar */
+.navbar .logo-image {
+    max-height: 40px;
+    width: auto;
+}
+
+/* Navbar colores y sombras */
+.navbar-dark {
+    background-color: #fff8e6; /* tono madera oscuro */
+}
+.navbar-nav .nav-link {
+    color: #fff8e6; /* color crema */
+}
+.navbar-nav .nav-link:hover {
+    color: #F2B632; /* color dorado al pasar el mouse */
+}

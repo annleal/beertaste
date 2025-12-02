@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td class="text-warning">${renderStars(t.avgRating)}</td>
         <td>
           <div class="d-flex gap-2 justify-content-end">
-            <button class="btn btn-sm btn-outline-light edit-btn" data-idx="${idx}"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-sm btn-outline-dark edit-btn" data-idx="${idx}"><i class="bi bi-pencil"></i></button>
             <button class="btn btn-sm btn-outline-danger delete-btn" data-idx="${idx}"><i class="bi bi-trash"></i></button>
           </div>
         </td>`;
