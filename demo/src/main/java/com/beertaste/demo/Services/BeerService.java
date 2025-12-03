@@ -49,20 +49,14 @@ public class BeerService {
             Beer existing = getBeerById(beer.getIdCerveza())
                     .orElseThrow(() -> new IllegalArgumentException("Cerveza no encontrada"));
 
-            boolean isAdmin = loggedUser.getRole().equalsIgnoreCase("ADMIN");
-            boolean isOwner = existing.getUser().equals(loggedUser);
-            boolean hasEvaluations = !existing.getEvaluations().isEmpty();
-
-            if (!isAdmin && (!isOwner || hasEvaluations)) {
-                throw new IllegalArgumentException("No tienes permisos para editar esta cerveza");
-            }
-
-            // Actualizar campos
+         // Actualizar campos
             existing.setBusinessName(beer.getBusinessName());
             existing.setAbv(beer.getAbv());
             existing.setStyle(beer.getStyle());
             existing.setCountry(beer.getCountry());
-            existing.setPhoto(beer.getPhoto());
+            if (beer.getPhoto() != null) {
+                    existing.setPhoto(beer.getPhoto());
+            }
 
             return beerRepository.save(existing);
         } else {

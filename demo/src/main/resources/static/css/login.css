@@ -131,3 +131,14 @@ body {
   color: #ffc107;
   text-decoration: underline;
 }
+
+/*Pagina de registro*/
+
+.form-select {
+ border-radius: 10px;
+    text-align: center;
+    padding: 10px 12px;
+    max-width: 320px;
+    margin: 0 auto;
+    display: block;
+}

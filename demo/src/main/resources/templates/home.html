@@ -64,7 +64,7 @@
           </a>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3" th:if="${#authorization.expression('hasRole(''BAR'') or hasRole(''ADMIN'')')}">
           <a th:href="@{/beertap}" class="feature-card text-decoration-none">
             <div class="card shadow-sm h-100 p-3">
               <img th:src="@{/img/Tap.png}" alt="Beer Tap" class="feature-icon mb-3" />

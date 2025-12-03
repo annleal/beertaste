@@ -2,36 +2,39 @@ package com.beertaste.demo.Controller;
 
 import com.beertaste.demo.entity.Beer;
 import com.beertaste.demo.entity.User;
+import com.beertaste.demo.repository.CountryRepository;
+import com.beertaste.demo.repository.StyleRepository;
 import com.beertaste.demo.Services.BeerService;
 import com.beertaste.demo.dto.BeerTapDTO;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
-
 import org.imgscalr.Scalr;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 @Controller
 @RequestMapping("/beer")
 public class BeerController {
+     @Autowired
+    private CountryRepository countryRepository;
+    @Autowired
+    private StyleRepository styleRepository;
 
     private final BeerService beerService;
 
@@ -49,8 +52,14 @@ public class BeerController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Beer> beers = beerService.searchBeersPaged(search, pageable);
 
+      
+
         model.addAttribute("beersPage", beers);
         model.addAttribute("search", search);
+        model.addAttribute("beer", new Beer()); 
+       // CORREGIDO
+        model.addAttribute("countries", countryRepository.findAll());
+        model.addAttribute("styles", styleRepository.findAll());
 
         return "beer";
     }
@@ -102,42 +111,76 @@ public class BeerController {
     }
 
     // ---------------- Crear cerveza ----------------
-    @PostMapping("/api")
-    @ResponseBody
-    public ResponseEntity<?> createBeer(@RequestBody Beer beer,
-                                        @AuthenticationPrincipal User loggedUser) {
-        try {
-            Beer saved = beerService.saveBeer(beer, loggedUser);
-            return ResponseEntity.ok(saved);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+@PostMapping("/api")
+@ResponseBody
+public ResponseEntity<?> createBeer(
+        @RequestParam String businessName,
+        @RequestParam Double abv,
+        @RequestParam Long style,
+        @RequestParam Long country,
+        @RequestParam(value = "photo", required = false) MultipartFile photo,
+        @AuthenticationPrincipal User loggedUser) {
+
+    try {
+        Beer beer = new Beer();
+        beer.setBusinessName(businessName);
+        beer.setAbv(abv);
+
+        // Asociar estilo y país
+        beer.setStyle(styleRepository.findById(style).orElse(null));
+        beer.setCountry(countryRepository.findById(country).orElse(null));
+
+        if(photo != null && !photo.isEmpty()){
+            beer.setPhoto(photo.getBytes());
         }
+
+       beerService.saveBeer(beer, loggedUser);
+        
+        return ResponseEntity.ok("Cerveza guardada con éxito");
+
+    } catch (IOException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al subir la foto");
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
+
 
     // ---------------- Editar cerveza ----------------
-    @PutMapping("/api/{id}")
-    @ResponseBody
-    public ResponseEntity<?> updateBeer(@PathVariable Long id,
-                                        @RequestBody Beer beerDetails,
-                                        @AuthenticationPrincipal User loggedUser) {
-        return beerService.getBeerById(id)
-                .map(existing -> {
-                    try {
-                        existing.setBusinessName(beerDetails.getBusinessName());
-                        existing.setAbv(beerDetails.getAbv());
-                        existing.setStyle(beerDetails.getStyle());
-                        existing.setCountry(beerDetails.getCountry());
-                        existing.setPhoto(beerDetails.getPhoto());
+  @PutMapping("/api/{id}")
+@ResponseBody
+public ResponseEntity<?> updateBeer(
+        @PathVariable Long id,
+        @RequestParam String businessName,
+        @RequestParam Double abv,
+        @RequestParam Long style,
+        @RequestParam Long country,
+        @RequestParam(value = "photo", required = false) MultipartFile photo,
+        @AuthenticationPrincipal User loggedUser) {
 
-                        Beer updated = beerService.saveBeer(existing, loggedUser);
-                        return ResponseEntity.ok(updated);
+    try {
+        Beer beer = new Beer();
+        beer.setIdCerveza(id);
+        beer.setBusinessName(businessName);
+        beer.setAbv(abv);
+        beer.setStyle(styleRepository.findById(style).orElse(null));
+        beer.setCountry(countryRepository.findById(country).orElse(null));
 
-                    } catch (IllegalArgumentException e) {
-                        return ResponseEntity.badRequest().body(e.getMessage());
-                    }
-                })
-                .orElse(ResponseEntity.notFound().build());
+        if(photo != null && !photo.isEmpty()){
+            beer.setPhoto(photo.getBytes());
+        }
+
+        beerService.saveBeer(beer, loggedUser);
+
+        return ResponseEntity.ok("Cerveza actualizada correctamente");
+
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body("Error al actualizar la cerveza: " + e.getMessage());
     }
+}
+
+
+
 
     // ---------------- Borrar cerveza ----------------
     @DeleteMapping("/api/{id}")
