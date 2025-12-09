@@ -31,9 +31,15 @@
                 <a class="nav-link" th:href="@{/perfil}">Perfil</a>
             </li>
             
-            <li class="nav-item">
+            <li class="nav-item" th:if="${#authorization.expression('hasRole(''BAR'') or hasRole(''ADMIN'')')}">
                 <a class="nav-link" th:href="@{/beertap}">BeerTap</a>
             </li>
+
+           <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                <a class="nav-link" th:href="@{/admin/users}">Usuarios</a>
+            </li>
+
+
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/logout}">Salir</a>
             </li>

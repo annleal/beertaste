@@ -3,8 +3,9 @@ package com.beertaste.demo.Services;
 import com.beertaste.demo.entity.Country;
 import com.beertaste.demo.entity.User;
 import com.beertaste.demo.repository.UserRepository;
-
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -78,6 +79,9 @@ public class UserService {
 
     public Optional<User> getUserByEmail(String email) {
     return userRepository.findByEmail(email);
+}
+public Page<User> getUsers(Pageable pageable) {
+    return userRepository.findAll(pageable);
 }
 
 
