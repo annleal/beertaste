@@ -21,7 +21,7 @@ mvn clean package   # Compila y empaqueta el código
 **MySQL Driver**
 **Spring Boot DevTools**
 **Spring Security**
-**Thymeleaf**
+**Thymeleaf** 
 **Validation**
 
 
