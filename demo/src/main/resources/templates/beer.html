@@ -18,7 +18,7 @@
 
 <div class="container mt-4">
 
-    <h1 class="mb-4 text-center">🍺 Catálogo de Cervezas</h1>
+    <h1 class="mb-4 text-center">Catálogo de Cervezas</h1>
     <!--div class="table-responsive"-->
     <!--table class="table table-bordered table-striped"-->
  
@@ -78,6 +78,7 @@
              data-country=${beer.country.idCountry}, 
              data-style=${beer.style.styleId}, 
              data-hasphoto=${beer.photo != null}"
+        th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
     onclick="editBeer(this)">
 <i class="bi bi-pencil"></i> Editar
 </button>

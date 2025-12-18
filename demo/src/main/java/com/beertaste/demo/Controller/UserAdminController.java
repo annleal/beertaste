@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,9 +46,10 @@ public class UserAdminController {
     @GetMapping("/api/users")
     @ResponseBody
     public Map<String, Object> listUsers(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "10") int size) {
+                                         @RequestParam(defaultValue = "10") int size,
+                                         @RequestParam(required = false) String search) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<User> usersPage = userService.getUsers(pageable);
+          Page<User> usersPage = userService.searchUsers(search, pageable);
 
         Map<String, Object> response = new HashMap<>();
         response.put("content", usersPage.getContent());
@@ -80,6 +82,8 @@ public class UserAdminController {
                                         @RequestParam String password,
                                         @RequestParam Long country,
                                         @RequestParam(defaultValue = "USER") String role) {
+
+        
         try {
             if(userService.getUserByEmail(email).isPresent()) {
                 return ResponseEntity.badRequest().body("Email ya registrado");
@@ -89,7 +93,7 @@ public class UserAdminController {
             user.setName(name);
             user.setSurname(surname);
             user.setEmail(email);
-            user.setPassword(passwordEncoder.encode(password)); // BCrypt
+            user.setPassword(Base64.getEncoder().encodeToString(password.getBytes())); // Base64
             user.setRole(role);
             user.setCountry(countryService.getCountryById(country).orElseThrow(
                     () -> new IllegalArgumentException("País no válido")

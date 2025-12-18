@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,9 +42,13 @@ public class UserService {
         if (!StringUtils.hasText(user.getEmail())) {
             throw new IllegalArgumentException("El campo 'email' no puede estar vacío");
         }
-        if (!StringUtils.hasText(user.getPassword())) {
-            throw new IllegalArgumentException("El campo 'password' no puede estar vacío");
-        }
+            // Solo codificamos si la contraseña tiene texto
+         if (StringUtils.hasText(user.getPassword())) {
+        user.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
+            } else if (user.getIdUser() == null) {
+        // Si es un usuario nuevo, contraseña obligatoria
+         throw new IllegalArgumentException("El campo 'password' no puede estar vacío");
+         }
         if (user.getCountry() != null && user.getCountry().getIdCountry() != null) {
             Country country = countryService.getCountryById(user.getCountry().getIdCountry())
                     .orElseThrow(() -> new IllegalArgumentException("País no válido"));
@@ -83,6 +88,11 @@ public class UserService {
 public Page<User> getUsers(Pageable pageable) {
     return userRepository.findAll(pageable);
 }
-
+public Page<User> searchUsers(String search, Pageable pageable) {
+    if (search == null || search.isBlank()) {
+        return userRepository.findAll(pageable);
+    }
+    return userRepository.findByEmailContainingIgnoreCase(search, pageable);
+}
 
 }

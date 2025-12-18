@@ -1,13 +1,20 @@
 const userTableBody = document.getElementById("userTableBody");
 const userModal = new bootstrap.Modal(document.getElementById("userModal"));
 const userForm = document.getElementById("userForm");
+const searchForm = document.querySelector('form');
+const searchInput = searchForm.querySelector('input[name="search"]');
 
-// ---------------- Load Users ----------------
 let currentPage = 0;
 const pageSize = 10;
 
-async function loadUsers(page = 0) {
-    const res = await fetch(`/admin/api/users?page=${page}&size=${pageSize}`);
+// ---------------- Load Users ----------------
+async function loadUsers(page = 0, search = "") {
+    let url = `/admin/api/users?page=${page}&size=${pageSize}`;
+    if (search.trim() !== "") {
+        url += `&search=${encodeURIComponent(search)}`;
+    }
+
+    const res = await fetch(url);
     const data = await res.json();
 
     userTableBody.innerHTML = "";
@@ -26,40 +33,44 @@ async function loadUsers(page = 0) {
         `;
     });
 
-    renderPagination(data.totalPages, page);
+    renderPagination(data.totalPages, page, search);
 }
 
-function renderPagination(totalPages, page) {
+// ---------------- Pagination ----------------
+function renderPagination(totalPages, page, search = "") {
     const pagination = document.getElementById("pagination");
     pagination.innerHTML = "";
 
-    // Botón "Anterior"
     const prevBtn = document.createElement("button");
     prevBtn.className = "btn btn-sm btn-secondary me-1";
     prevBtn.innerText = "« Anterior";
     prevBtn.disabled = page === 0;
-    prevBtn.onclick = () => loadUsers(page - 1);
+    prevBtn.onclick = () => loadUsers(page - 1, search);
     pagination.appendChild(prevBtn);
 
-    // Botón "Siguiente"
     const nextBtn = document.createElement("button");
     nextBtn.className = "btn btn-sm btn-secondary";
     nextBtn.innerText = "Siguiente »";
     nextBtn.disabled = page >= totalPages - 1;
-    nextBtn.onclick = () => loadUsers(page + 1);
+    nextBtn.onclick = () => loadUsers(page + 1, search);
     pagination.appendChild(nextBtn);
 
     currentPage = page;
 }
 
-// ---------------- Open Modal for CREATE ----------------
+// ---------------- Search Form ----------------
+searchForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await loadUsers(0, searchInput.value); // reinicia a la primera página con filtro
+});
+
+// ---------------- Modal CRUD ----------------
 function openCreateModal() {
     document.getElementById("idUser").value = "";
     userForm.reset();
     userModal.show();
 }
 
-// ---------------- Open Modal for EDIT ----------------
 async function editUser(id) {
     const res = await fetch("/admin/api/users/" + id);
     const u = await res.json();
@@ -68,21 +79,20 @@ async function editUser(id) {
     document.getElementById("name").value = u.name;
     document.getElementById("surname").value = u.surname;
     document.getElementById("email").value = u.email;
-    document.getElementById("country").value = u.country.idCountry; // oculto
+    document.getElementById("country").value = u.country.idCountry;
     document.getElementById("role").value = u.role;
     document.getElementById("password").value = "";
 
     userModal.show();
 }
 
-// ---------------- Delete User ----------------
 async function deleteUser(id) {
     if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
     await fetch("/admin/api/users/" + id, { method: "DELETE" });
     loadUsers(currentPage);
 }
 
-// ---------------- Submit Form (POST / PUT) ----------------
+// ---------------- Submit Form ----------------
 userForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -91,7 +101,11 @@ userForm.addEventListener("submit", async (e) => {
     formData.append("name", document.getElementById("name").value);
     formData.append("surname", document.getElementById("surname").value);
     formData.append("email", document.getElementById("email").value);
-    formData.append("country", document.getElementById("country").value); // oculto
+     // país: si está vacío (nuevo usuario), asignamos 7
+    let countryValue = document.getElementById("country").value;
+    if (!countryValue) countryValue = "7";
+    formData.append("country", countryValue);
+    //formData.append("country", document.getElementById("country").value);
     formData.append("role", document.getElementById("role").value);
 
     const password = document.getElementById("password").value;
@@ -102,8 +116,8 @@ userForm.addEventListener("submit", async (e) => {
 
     await fetch(url, { method, body: formData });
     userModal.hide();
-    loadUsers(currentPage);
+    loadUsers(currentPage, searchInput.value);
 });
 
 // ---------------- Init ----------------
-loadUsers();
+loadUsers(); // primera carga sin filtro

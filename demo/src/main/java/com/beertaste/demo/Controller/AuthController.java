@@ -37,6 +37,12 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, Model model) {
         try {
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            String encodedPassword = java.util.Base64.getEncoder()
+                                        .encodeToString(user.getPassword().getBytes());
+            user.setPassword(encodedPassword);
+                 }       
+
             userService.saveUser(user);
             model.addAttribute("successMessage", "Usuario registrado correctamente. Puedes iniciar sesión.");
             return "login"; // Redirige a login
